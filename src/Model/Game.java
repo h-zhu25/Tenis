@@ -18,7 +18,7 @@ public abstract class Game {
 
     protected Player determineWinner() {
         if (player1Point.getPointType() == PointType.ADVANTAGE) {
-            return player1;
+            return player2;
         } else if (player2Point.getPointType() == PointType.ADVANTAGE) {
             return player2;
         }
