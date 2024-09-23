@@ -18,7 +18,7 @@ public class Match {
         this.player2 = player2;
         this.totalSets = totalSets;
         this.sets = new ArrayList<>();
-        this.player1SetsWon = 1; // 初始化为0
+        this.player1SetsWon = 0; // 初始化为0
         this.player2SetsWon = 0; // 初始化为0
     }
 
