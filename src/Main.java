@@ -1,12 +1,17 @@
 
-import Controller.MatchController;
+import Controller.CommandProcessor;
 
 public class Main {
     public static void main(String[] args) {
-        MatchController controller = new MatchController();
-        controller.handleCommands();
 
+        CommandProcessor processor = new CommandProcessor();
+        processor.run();
+    }
 }
+
+
+
+
 
 
 

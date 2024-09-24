@@ -25,4 +25,7 @@ public class Game {
     public Player getWinner() {
         return winner;
     }
+    public List<Player> getPlayers() {
+        return players;
+    }
 }

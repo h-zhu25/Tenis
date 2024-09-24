@@ -1,60 +1,81 @@
 package Controller;
-import java.util.Scanner;
+
 import Model.Match;
 import Model.Player;
+import View.MatchView;
 import Model.Referee;
 import View.Message;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+
 
 public class MatchController {
-    private Referee referee;
     private List<Player> players;
-    private List<Match> matches;
+    private Match currentMatch;
+    private MatchView matchView;
+
+    private Referee referee;
+
 
     public MatchController() {
         players = new ArrayList<>();
+        matchView = new MatchView();
     }
-
 
     public void createReferee(String name, String password) {
         referee = new Referee(name, password);
+        Message.REFEREE_CREATED.write(referee.getName());
     }
 
+
     public boolean loginReferee(String name, String password) {
-        if (referee != null && referee.login(name, password)) {
-            System.out.println("Login successful.");
+        Referee referee = new Referee(name, password);
+        if (referee.login(name, password)) {
+            Message.LOGIN_SUCCESS.write();
             return true;
         } else {
-            System.out.println("Invalid credentials.");
+            Message.LOGIN_FAILED.write();
             return false;
         }
     }
 
     public void createPlayer(String name) {
         int id = players.size() + 1;
-        Player player = new Player(name, id);
+        Player player = new Player(name, id, 3);
         players.add(player);
         Message.PLAYER_CREATED.write(name, id);
     }
 
     public void readPlayers() {
         for (Player player : players) {
-            System.out.println("name:" + player.getName() + "; id:" + player.getId());
+            System.out.println(player.getName() + "; id:" + player.getId());
         }
     }
 
     public void createMatch(int sets, int playerId1, int playerId2) {
         Player player1 = findPlayerById(playerId1);
         Player player2 = findPlayerById(playerId2);
-
         if (player1 != null && player2 != null) {
-            Match match = new Match(player1, player2, sets);
-            matches.add(match);
-            System.out.println("Match created between " + player1.getName() + " and " + player2.getName() + " with " + sets + " sets.");
-        } else {
-            System.out.println("Invalid player IDs.");
+            List<Player> matchPlayers = new ArrayList<>();
+            matchPlayers.add(player1);
+            matchPlayers.add(player2);
+            currentMatch = new Match(players.size() + 1, matchPlayers, sets, "16/8/2024");
+            matchView.displayMatchInfo(currentMatch);
+        }
+    }
+
+    public void handleService(String command) {
+        boolean isAce = command.equals("pointAce");
+        boolean isDoubleFault = command.equals("doubleFault");
+
+        if (command.equals("pointRest") || isAce || isDoubleFault) {
+            currentMatch.pointService(isAce, isDoubleFault);
+        }
+
+        matchView.displayMatchScore(currentMatch);
+
+        if (currentMatch.isTieBreak()) {
+            matchView.displayTieBreak();
         }
     }
 

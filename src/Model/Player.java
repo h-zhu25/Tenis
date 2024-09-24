@@ -12,10 +12,7 @@ import java.util.List;
         private boolean isServing;
         private int[] setWins;
 
-        public Player(String name, int id) {
-            this.name = name;
-            this.id = id;
-        }
+
 
         public Player(String name, int id,int setsCount) {
             this.name = name;
