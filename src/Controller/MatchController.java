@@ -3,9 +3,20 @@ import java.util.Scanner;
 import Model.Match;
 import Model.Player;
 import Model.Referee;
+import View.Message;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class MatchController {
     private Referee referee;
-    private Match match;
+    private List<Player> players;
+    private List<Match> matches;
+
+    public MatchController() {
+        players = new ArrayList<>();
+    }
+
 
     public void createReferee(String name, String password) {
         referee = new Referee(name, password);
@@ -21,51 +32,42 @@ public class MatchController {
         }
     }
 
-    // 从控制台输入球员名字并创建比赛
-    public void createMatchFromInput(Scanner scanner) {
-        System.out.println("Enter name of Player 1:");
-        String player1Name = scanner.nextLine();
-        Player player1 = new Player(player1Name);
-
-        System.out.println("Enter name of Player 2:");
-        String player2Name = scanner.nextLine();
-        Player player2 = new Player(player2Name);
-
-        // 假设比赛为3局
-        match = new Match(player1, player2, 3);
-        System.out.println("Match started between " + player1.getName() + " and " + player2.getName());
+    public void createPlayer(String name) {
+        int id = players.size() + 1;
+        Player player = new Player(name, id);
+        players.add(player);
+        Message.PLAYER_CREATED.write(name, id);
     }
 
-    // 选择得分的球员并更新比分板
-    public void selectPlayerToScore() {
-        Scanner scanner = new Scanner(System.in);
+    public void readPlayers() {
+        for (Player player : players) {
+            System.out.println("name:" + player.getName() + "; id:" + player.getId());
+        }
+    }
 
-        while (!match.isMatchOver()) {
-            System.out.println("Who scored? Enter 1 for " + match.getPlayer1().getName() + " or 2 for " + match.getPlayer2().getName());
-            int choice = scanner.nextInt();
+    public void createMatch(int sets, int playerId1, int playerId2) {
+        Player player1 = findPlayerById(playerId1);
+        Player player2 = findPlayerById(playerId2);
 
-            if (choice == 1) {
-                match.getPlayer1().winPoint();
-                updateScoreBoard();
-            } else if (choice == 2) {
-                match.getPlayer2().winPoint();
-                updateScoreBoard();
-            } else {
-                System.out.println("Invalid choice. Try again.");
-            }
+        if (player1 != null && player2 != null) {
+            Match match = new Match(player1, player2, sets);
+            matches.add(match);
+            System.out.println("Match created between " + player1.getName() + " and " + player2.getName() + " with " + sets + " sets.");
+        } else {
+            System.out.println("Invalid player IDs.");
+        }
+    }
 
-            if (match.isSetOver()) {
-                match.endSet();
-                System.out.println("Set over.");
+    private Player findPlayerById(int id) {
+        for (Player player : players) {
+            if (player.getId() == id) {
+                return player;
             }
         }
-        System.out.println("Match over. Winner: " + match.getWinner().getName());
+        return null;
     }
 
-    // 更新并显示比分板
-    public void updateScoreBoard() {
-        System.out.println("Scoreboard:");
-        System.out.println(match.getPlayer1().getName() + ": " + match.getPlayer1().getPoints() + " Points");
-        System.out.println(match.getPlayer2().getName() + ": " + match.getPlayer2().getPoints() + " Points");
-    }
+
+
 }
+

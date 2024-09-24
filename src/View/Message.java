@@ -2,31 +2,24 @@ package View;
 
 public enum Message {
 
-        REFEREE_CREATED("Referee %s created."),
-        REFEREE_LOGIN_SUCCESS("Referee %s logged in successfully."),
-        REFEREE_LOGIN_FAILED("Login failed."),
-        REFEREE_LOGOUT("Referee logged out."),
-        PLAYER_CREATED("Player %s created."),
-        NO_PLAYERS_AVAILABLE("No players available."),
-        PLAYER_INFO("name: %s; id: %d"),
-        MATCH_CREATED("Match created. Match ID: %d"),
-        MATCH_NOT_FOUND("Match not found."),
-        REFEREE_LOGIN_REQUIRED("You need to log in as a referee first."),
-        NO_REFEREE_CREATED("No referee created yet."),
-        INVALID_COMMAND("Invalid command.");
+                PLAYER_CREATED("Player created: %s with id: %d"),
+                MATCH_CREATED("Match created between %s and %s with %d sets."),
+                PLAYER_SCORED("Who scored? Enter 1 for %s or 2 for %s"),
+                MATCH_OVER("Match over. Winner: %s"),
+                INVALID_COMMAND("Invalid command."),
+                LOGIN_SUCCESS("Login successful."),
+                LOGIN_FAILED("Invalid credentials. Please try again.");
 
-        private final String message;
+                private String message;
 
-        Message(String message) {
-            this.message = message;
+                Message(String message) {
+                        this.message = message;
+                }
+
+                public void write(Object... args) {
+                        System.out.printf(message + "%n", args);
+                }
         }
 
-        public void writeln(Object... args) {
-            System.out.println(String.format(this.message, args));
-        }
 
-        public void write(Object... args) {
-            System.out.print(String.format(this.message, args));
-        }
-    }
 
