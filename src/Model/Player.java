@@ -1,25 +1,27 @@
 package Model;
-
 public class Player {
-    private static int idCounter = 1;
-    private final int id;
-    private final String name;
+    private String name;
+    private int points;
 
     public Player(String name) {
-        this.id = idCounter++;
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
+        this.points = 0;
     }
 
     public String getName() {
         return name;
     }
 
-    @Override
-    public String toString() {
-        return "Player{" + "id=" + id + ", name='" + name + '\'' + '}';
+    public int getPoints() {
+        return points;
+    }
+
+    public void winPoint() {
+        points++;
+    }
+
+    public void resetPoints() {
+        points = 0;
     }
 }
+

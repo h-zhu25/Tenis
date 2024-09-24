@@ -1,36 +1,71 @@
 package Controller;
-
+import java.util.Scanner;
 import Model.Match;
-import Model.Set;
-import View.ConsoleView;
-import Model.StandardGame;
-
-
+import Model.Player;
+import Model.Referee;
 public class MatchController {
-
+    private Referee referee;
     private Match match;
-    private ConsoleView view;
 
-    public MatchController(Match match, ConsoleView view) {
-        this.match = match;
-        this.view = view;
+    public void createReferee(String name, String password) {
+        referee = new Referee(name, password);
     }
 
-    public void startMatch() {
-        view.displayMessage("Starting Match: " + match.getMatchScore());
-
-        for (int i = 0; i < match.getTotalSets(); i++) {
-            Set set = new Set(match.getPlayer1(), match.getPlayer2());
-            for (int j = 0; j < 6; j++) {
-                // 在这里可以加入 StandardGame 或 TieBreakGame
-                StandardGame game = new StandardGame(match.getPlayer1(), match.getPlayer2());
-                set.addGame(game);
-            }
-            match.addSet(set);
-            view.displayMessage("Set finished: " + set.getSetScore());
+    public boolean loginReferee(String name, String password) {
+        if (referee != null && referee.login(name, password)) {
+            System.out.println("Login successful.");
+            return true;
+        } else {
+            System.out.println("Invalid credentials.");
+            return false;
         }
-
-        view.displayMessage("Match Winner: " + match.getMatchWinner().getName());
     }
 
+    // 从控制台输入球员名字并创建比赛
+    public void createMatchFromInput(Scanner scanner) {
+        System.out.println("Enter name of Player 1:");
+        String player1Name = scanner.nextLine();
+        Player player1 = new Player(player1Name);
+
+        System.out.println("Enter name of Player 2:");
+        String player2Name = scanner.nextLine();
+        Player player2 = new Player(player2Name);
+
+        // 假设比赛为3局
+        match = new Match(player1, player2, 3);
+        System.out.println("Match started between " + player1.getName() + " and " + player2.getName());
+    }
+
+    // 选择得分的球员并更新比分板
+    public void selectPlayerToScore() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (!match.isMatchOver()) {
+            System.out.println("Who scored? Enter 1 for " + match.getPlayer1().getName() + " or 2 for " + match.getPlayer2().getName());
+            int choice = scanner.nextInt();
+
+            if (choice == 1) {
+                match.getPlayer1().winPoint();
+                updateScoreBoard();
+            } else if (choice == 2) {
+                match.getPlayer2().winPoint();
+                updateScoreBoard();
+            } else {
+                System.out.println("Invalid choice. Try again.");
+            }
+
+            if (match.isSetOver()) {
+                match.endSet();
+                System.out.println("Set over.");
+            }
+        }
+        System.out.println("Match over. Winner: " + match.getWinner().getName());
+    }
+
+    // 更新并显示比分板
+    public void updateScoreBoard() {
+        System.out.println("Scoreboard:");
+        System.out.println(match.getPlayer1().getName() + ": " + match.getPlayer1().getPoints() + " Points");
+        System.out.println(match.getPlayer2().getName() + ": " + match.getPlayer2().getPoints() + " Points");
+    }
 }

@@ -1,27 +1,32 @@
-
+import java.util.Scanner;
 import Controller.MatchController;
-import Model.Match;
-import Model.Player;
-import View.ConsoleView;
 
-    public class Main {
-        public static void main(String[] args) {
-            ConsoleView view = new ConsoleView();
+public class Main {
+    public static void main(String[] args) {
+        MatchController controller = new MatchController();
+        Scanner scanner = new Scanner(System.in);
 
-            // 创建玩家
-            Player player1 = new Player("Nadal");
-            Player player2 = new Player("Alcaraz");
+        // 创建裁判并登录
+        controller.createReferee("Molina", "1234");
 
-            // 创建比赛
-            Match match = new Match(player1, player2, 3);
+        System.out.println("Please login as the referee:");
+        System.out.print("Enter referee name: ");
+        String refName = scanner.nextLine();
+        System.out.print("Enter referee password: ");
+        String refPassword = scanner.nextLine();
 
-            // 创建控制器
-            MatchController controller = new MatchController(match, view);
+        if (controller.loginReferee(refName, refPassword)) {
+            // 让玩家输入名字
+            controller.createMatchFromInput(scanner);
 
-            // 开始比赛
-            controller.startMatch();
+            // 选择球员得分并显示比分
+            controller.selectPlayerToScore();
+        } else {
+            System.out.println("Login failed. Exiting.");
         }
     }
+}
+
 
 
 
