@@ -123,27 +123,29 @@ public class Match {
     private void checkGameOver() {
         int p1Points = players.get(0).getPoints();
         int p2Points = players.get(1).getPoints();
+        int pointDifference = Math.abs(p1Points - p2Points);
 
         // 处理常规游戏和 Deuce 机制
         if (p1Points >= 3 && p2Points >= 3) {
             if (p1Points == p2Points) {
                 // 双方 40-40 进入 Deuce
                 System.out.println("Deuce!");
-            } else if (Math.abs(p1Points - p2Points) == 1) {
+            } else if (pointDifference == 1) {
                 // 一方领先一分，显示 Advantage
                 Player advantagedPlayer = p1Points > p2Points ? players.get(0) : players.get(1);
                 System.out.println(advantagedPlayer.getName() + " has Advantage (AD)!");
-            } else if (Math.abs(p1Points - p2Points) >= 2) {
+            } else if (pointDifference >= 2) {
                 // 一方赢得游戏
                 Player winner = p1Points > p2Points ? players.get(0) : players.get(1);
                 winGame(winner);
             }
-        } else if (p1Points >= 4 || p2Points >= 4) {
+        } else if ((p1Points >= 4 || p2Points >= 4) && pointDifference >= 2) {
             // 常规游戏，没有进入 Deuce 的情况
             Player winner = p1Points > p2Points ? players.get(0) : players.get(1);
             winGame(winner);
         }
     }
+
 
     // Match.java
     public void winGame(Player winner) {
@@ -181,7 +183,7 @@ public class Match {
         switchService();
 
         // 显示当前比分
-        matchView.displayMatchScore(this);
+//        matchView.displayMatchScore(this);
     }
 
 
@@ -200,8 +202,9 @@ public class Match {
             Player opponent = players.get((players.indexOf(servingPlayer) + 1) % players.size());
             opponent.winPoint();  // 给对方加分
             System.out.println(opponent.getName() + " wins the point during rest.");
+            checkGameOver();
         }
-        matchView.displayMatchScore(this);
+//        matchView.displayMatchScore(this);
          // 显示最新比分
     }
 
