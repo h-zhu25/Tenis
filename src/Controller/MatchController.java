@@ -1,5 +1,4 @@
 package Controller;
-
 import Model.Match;
 import Model.Player;
 import View.MatchView;
@@ -7,15 +6,11 @@ import Model.Referee;
 import View.Message;
 import java.util.ArrayList;
 import java.util.List;
-
-
 public class MatchController {
     private List<Player> players;
     private Match currentMatch;
     private MatchView matchView;
-
     private Referee referee;
-
 
     public MatchController() {
         players = new ArrayList<>();
@@ -68,16 +63,40 @@ public class MatchController {
         boolean isAce = command.equals("pointAce");
         boolean isDoubleFault = command.equals("doubleFault");
 
-        if (command.equals("pointRest") || isAce || isDoubleFault) {
-            currentMatch.pointService(isAce, isDoubleFault);
+        if (command.equals("pointService")) {
+            currentMatch.pointService(false, false);  // 正常发球得分
+        } else if (isAce) {
+            currentMatch.pointService(true, false);  // ACE球，发球球员得分
+        } else if (isDoubleFault) {
+            currentMatch.pointService(false, true);  // 双误，对方得分
+        } else if (command.equals("pointRest")) {
+            currentMatch.pointRest();  // 让对方得分
         }
 
-        matchView.displayMatchScore(currentMatch);
+        matchView.displayMatchScore(currentMatch);  // 显示最新比分
 
         if (currentMatch.isTieBreak()) {
             matchView.displayTieBreak();
         }
     }
+    public void handleLackService() {
+
+
+            currentMatch.lackService();
+            matchView.displayMatchScore(currentMatch);
+    }
+
+
+
+    public void handlePointService() {
+        currentMatch.pointService(false, false);  // 正常得分
+        matchView.displayMatchScore(currentMatch);  // 显示最新比分
+
+        if (currentMatch.isSetOver()) {
+            matchView.displaySetWin(currentMatch);  // 如果一盘结束则显示
+        }
+    }
+
 
     private Player findPlayerById(int id) {
         for (Player player : players) {
@@ -87,6 +106,7 @@ public class MatchController {
         }
         return null;
     }
+
 
 
 

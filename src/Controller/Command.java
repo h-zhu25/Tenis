@@ -51,7 +51,13 @@ public enum Command {
     LACK_SERVICE {
         @Override
         public void execute(String[] args, MatchController controller) {
-            controller.handleService("lackService");
+            controller.handleLackService();
+        }
+    },
+    POINT_REST {
+        @Override
+        public void execute(String[] args, MatchController controller) {
+            controller.handleService("pointRest");
         }
     };
 
@@ -75,6 +81,7 @@ public enum Command {
         COMMAND_MAP.put("createMatch", CREATE_MATCH);
         COMMAND_MAP.put("pointService", POINT_SERVICE);
         COMMAND_MAP.put("lackService", LACK_SERVICE);
+        COMMAND_MAP.put("pointRest",POINT_REST );
     }
 
     public static Command from(String commandName) {

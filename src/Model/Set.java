@@ -19,12 +19,12 @@ public class Set {
     }
 
     public void winGame(Player player) {
-        playerWins.put(player, playerWins.get(player) + 1);
+        playerWins.put(player, playerWins.get(player) + 1);  // 增加该玩家的胜利局数
     }
 
     public boolean isSetOver() {
         for (int wins : playerWins.values()) {
-            if (wins >= gamesToWin) {
+            if (wins >= gamesToWin) {  // 判断玩家是否赢得足够局数
                 return true;
             }
         }
@@ -43,6 +43,7 @@ public class Set {
         }
 
         return setWinner;
+
     }
 
     public int getPlayerWins(Player player) {
