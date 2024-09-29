@@ -11,7 +11,7 @@ import java.util.List;
         private int points;
         private boolean isServing;
         private int[] setWins;
-        private boolean fault = false;  // 是否发球失误
+        private boolean fault = false;
 
         public void setFault(boolean fault) {
             this.fault = fault;
@@ -20,9 +20,6 @@ import java.util.List;
         public boolean isFault() {
             return fault;
         }
-
-
-
         public Player(String name, int id,int setsCount) {
             this.name = name;
             this.id = id;
@@ -53,9 +50,9 @@ import java.util.List;
 
         public void winPoint() {
             if (points < 3) {
-                points++;  // 从 0, 15, 30 到 40 增加
+                points++;
             } else {
-                points = 4;  // 达到 40 后，进入 AD 或赢得游戏
+                points = 4;
             }
         }
         public void resetPoints() {
@@ -75,7 +72,7 @@ import java.util.List;
         }
 
         public void winSet() {
-            this.setWins[0]++;  // 更新玩家赢得的set数量
+            this.setWins[0]++;
         }
 
     }

@@ -5,7 +5,6 @@ public enum Message {
                 PLAYER_CREATED("Player created: %s with id: %d"),
                 REFEREE_CREATED("Referee created: %s"),
                 MATCH_CREATED("Match created between %s and %s with %d sets."),
-
                 LOGIN_SUCCESS("Login successful."),
                 LOGIN_FAILED("Invalid credentials. Please try again."),
                 GAME_BALL("Game ball!!!"),
