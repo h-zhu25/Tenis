@@ -1,0 +1,19 @@
+createReferee name:molina;password:1234
+
+login name:molina;password:1234
+
+createPlayer name:Hao
+
+createPlayer name:Yinan
+
+readPlayers
+
+createMatch sets:3;ids:1,2
+
+pointService
+
+lackService
+
+pointRest
+
+logout
