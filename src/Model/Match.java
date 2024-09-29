@@ -9,7 +9,7 @@ public class Match {
     private int setsCount;
     private int id;
     private boolean tieBreak;
-    private final String[] tennisScores = { "0", "15", "30", "40", "AD" };
+
     private boolean firstFault = false;
     private MatchView matchView;
     private Set currentSet;
@@ -85,19 +85,16 @@ public class Match {
         int p2Points = players.get(1).getPoints();
         int pointDifference = Math.abs(p1Points - p2Points);
 
-        // 处理 Deuce 和 Advantage 机制
+
         if (p1Points >= 3 && p2Points >= 3) {
             if (p1Points == p2Points) {
 
             } else if (pointDifference == 1) {
 
              } else if (pointDifference >= 2) {
-
                 Player winner = p1Points > p2Points ? players.get(0) : players.get(1);
                 resetPoints();
                 firstFault = false;
-
-                // 切换发球方
                 switchService();;
             }
         } else if ((p1Points >= 4 || p2Points >= 4) && pointDifference >= 2) {
