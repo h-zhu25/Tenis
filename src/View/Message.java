@@ -1,7 +1,6 @@
 package View;
 
 public enum Message {
-
                 PLAYER_CREATED("Player created: %s with id: %d"),
                 REFEREE_CREATED("Referee created: %s"),
                 MATCH_CREATED("Match created between %s and %s with %d sets."),
