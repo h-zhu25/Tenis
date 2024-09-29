@@ -1,20 +1,17 @@
 package Model;
 
 import View.MatchView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
+
 
 public class Match {
     private String date;
     private List<Player> players;
     private int[] playerSetWins;
-    private boolean serviceFault;
+
     private int setsCount;
     private int id;
-    private List<Point> points;
+
     private boolean tieBreak;
     private final String[] tennisScores = { "0", "15", "30", "40", "AD" };
     private boolean firstFault = false;
@@ -28,12 +25,11 @@ public class Match {
         this.players = players;
         this.setsCount = setsCount;
         this.date = date;
-        this.serviceFault = false;
         this.playerSetWins = new int[players.size()];
-        this.points = new ArrayList<>();
+
         this.tieBreak = false;
         this.matchView = new MatchView();
-        this.gamesToWinInSet = gamesToWinInSet;  // 初始化赢得Set的局数
+        this.gamesToWinInSet = gamesToWinInSet;
         this.currentSet = new Set(players, gamesToWinInSet);
 
         players.get(0).setServing(true);
@@ -74,16 +70,15 @@ public class Match {
                 break;
             }
         }
-
         if (servingPlayer != null) {
             if (!firstFault) {
                 firstFault = true;
                 servingPlayer.setFault(true);
-                System.out.println(servingPlayer.getName() + " commits a service fault.");
+                System.out.println(servingPlayer.getName());
             } else {
                 Player opponent = players.get((players.indexOf(servingPlayer) + 1) % players.size());
-                opponent.winPoint();  // Give point to opponent
-                System.out.println(opponent.getName() + " wins the point due to double fault.");
+                opponent.winPoint();
+                System.out.println(opponent.getName());
                 firstFault = false;  // Reset fault after second fault
                 servingPlayer.setFault(false);
                 checkGameOver();  // Check if the game ends due to the point
@@ -99,16 +94,15 @@ public class Match {
                 Player opponent = players.get((players.indexOf(player) + 1) % players.size());
 
                 if (!isDoubleFault) {
-                    // 如果不是双误，发球球员得分
                     player.winPoint();
 
                 } else {
-                    // 如果是双误，对手得分
+
                     opponent.winPoint();
-                    System.out.println(opponent.getName() + " wins the point due to double fault.");
+                    System.out.println(opponent.getName());
                 }
 
-                checkGameOver();  // 检查游戏是否结束
+                checkGameOver();
                 break;
             }
         }
@@ -125,26 +119,29 @@ public class Match {
         int p2Points = players.get(1).getPoints();
         int pointDifference = Math.abs(p1Points - p2Points);
 
-        // 处理常规游戏和 Deuce 机制
+        // 处理 Deuce 和 Advantage 机制
         if (p1Points >= 3 && p2Points >= 3) {
             if (p1Points == p2Points) {
-                // 双方 40-40 进入 Deuce
-                System.out.println("Deuce!");
+
             } else if (pointDifference == 1) {
-                // 一方领先一分，显示 Advantage
-                Player advantagedPlayer = p1Points > p2Points ? players.get(0) : players.get(1);
-                System.out.println(advantagedPlayer.getName() + " has Advantage (AD)!");
-            } else if (pointDifference >= 2) {
-                // 一方赢得游戏
+
+             } else if (pointDifference >= 2) {
+                // 一方在 Advantage 后获得 2 分差距，赢得比赛
                 Player winner = p1Points > p2Points ? players.get(0) : players.get(1);
-                winGame(winner);
+                resetPoints();
+                firstFault = false;
+
+                // 切换发球方
+                switchService();;  // 调用 winGame 方法结束比赛
             }
         } else if ((p1Points >= 4 || p2Points >= 4) && pointDifference >= 2) {
-            // 常规游戏，没有进入 Deuce 的情况
+            // 没有进入 Deuce 的常规比赛结束
             Player winner = p1Points > p2Points ? players.get(0) : players.get(1);
-            winGame(winner);
+            winGame(winner);  // 调用 winGame 方法结束比赛
         }
     }
+
+
 
 
     // Match.java
@@ -163,7 +160,7 @@ public class Match {
             setWinner.winSet();  // 这里更新玩家赢得的 set 数量
 
             // 显示当前比分
-            matchView.displaySetWin(this); // 显示 set 胜利后的状态
+             // 显示 set 胜利后的状态
 
             // 判断 Match 是否结束
             if (isMatchOver()) {
@@ -182,8 +179,7 @@ public class Match {
         // 切换发球方
         switchService();
 
-        // 显示当前比分
-//        matchView.displayMatchScore(this);
+
     }
 
 
@@ -201,11 +197,9 @@ public class Match {
             // 对手加分
             Player opponent = players.get((players.indexOf(servingPlayer) + 1) % players.size());
             opponent.winPoint();  // 给对方加分
-            System.out.println(opponent.getName() + " wins the point during rest.");
             checkGameOver();
         }
-//        matchView.displayMatchScore(this);
-         // 显示最新比分
+//
     }
 
 
@@ -256,16 +250,6 @@ public class Match {
     public Player getMatchWinner() {
         return playerSetWins[0] > playerSetWins[1] ? players.get(0) : players.get(1);
     }
-
-
-
-
-
-
-
-
-
-
 }
 
 

@@ -54,7 +54,7 @@ public class MatchController {
             List<Player> matchPlayers = new ArrayList<>();
             matchPlayers.add(player1);
             matchPlayers.add(player2);
-            currentMatch = new Match(players.size() + 1, matchPlayers, sets, "16/8/2024");
+            currentMatch = new Match(players.size() + 1, matchPlayers, sets, "30/9/2024");
             matchView.displayMatchInfo(currentMatch);
         }
     }
@@ -64,16 +64,16 @@ public class MatchController {
         boolean isDoubleFault = command.equals("doubleFault");
 
         if (command.equals("pointService")) {
-            currentMatch.pointService(false, false);  // 正常发球得分
+            currentMatch.pointService(false, false);
         } else if (isAce) {
-            currentMatch.pointService(true, false);  // ACE球，发球球员得分
+            currentMatch.pointService(true, false);
         } else if (isDoubleFault) {
-            currentMatch.pointService(false, true);  // 双误，对方得分
+            currentMatch.pointService(false, true);
         } else if (command.equals("pointRest")) {
-            currentMatch.pointRest();  // 让对方得分
+            currentMatch.pointRest();
         }
 
-        matchView.displayMatchScore(currentMatch);  // 显示最新比分
+        matchView.displayMatchScore(currentMatch);
 
         if (currentMatch.isTieBreak()) {
             matchView.displayTieBreak();
@@ -81,22 +81,9 @@ public class MatchController {
     }
     public void handleLackService() {
 
-
             currentMatch.lackService();
             matchView.displayMatchScore(currentMatch);
     }
-
-
-
-    public void handlePointService() {
-        currentMatch.pointService(false, false);  // 正常得分
-        matchView.displayMatchScore(currentMatch);  // 显示最新比分
-
-        if (currentMatch.isSetOver()) {
-            matchView.displaySetWin(currentMatch);  // 如果一盘结束则显示
-        }
-    }
-
 
     private Player findPlayerById(int id) {
         for (Player player : players) {

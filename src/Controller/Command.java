@@ -35,11 +35,11 @@ public enum Command {
     CREATE_MATCH {
         @Override
         public void execute(String[] args, MatchController controller) {
-            int sets = Integer.parseInt(getArgument(args, 0).split(":")[1]);  // 解析 sets 参数
-            String[] playerIds = getArgument(args, 1).split(":")[1].split(",");  // 解析 ids 参数
+            int sets = Integer.parseInt(getArgument(args, 0).split(":")[1]);
+            String[] playerIds = getArgument(args, 1).split(":")[1].split(",");
             int playerId1 = Integer.parseInt(playerIds[0]);
             int playerId2 = Integer.parseInt(playerIds[1]);
-            controller.createMatch(sets, playerId1, playerId2);  // 调用 MatchController 创建比赛
+            controller.createMatch(sets, playerId1, playerId2);
         }
     },
     POINT_SERVICE {

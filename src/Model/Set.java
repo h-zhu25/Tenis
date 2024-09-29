@@ -1,12 +1,10 @@
 package Model;
 
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 public class Set {
-    private Map<Player, Integer> playerWins; // 记录每个球员的获胜局数
+    private Map<Player, Integer> playerWins;
     private final int gamesToWin;
 
     public Set(List<Player> players, int gamesToWin) {
@@ -19,12 +17,12 @@ public class Set {
     }
 
     public void winGame(Player player) {
-        playerWins.put(player, playerWins.get(player) + 1);  // 增加该玩家的胜利局数
+        playerWins.put(player, playerWins.get(player) + 1);
     }
 
     public boolean isSetOver() {
         for (int wins : playerWins.values()) {
-            if (wins >= gamesToWin) {  // 判断玩家是否赢得足够局数
+            if (wins >= gamesToWin) {
                 return true;
             }
         }
@@ -43,8 +41,8 @@ public class Set {
         }
 
         return setWinner;
-
     }
+
 
     public int getPlayerWins(Player player) {
         return playerWins.get(player);
